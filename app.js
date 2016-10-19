@@ -1,114 +1,104 @@
-(function(){
+var Interval;
+var defaultTime = 1500;
+var pomodoroTime = 1500;
+var shortBreakTime = 300;
+var longBreakTime = 600;
+var running = false;
 
-	var app = {
-		timer : null,
-		defautlTime : null,
-		intervalID : null,
-		init : function(){
-			app.listeners();
-		},
-		listeners : function(){
-			$('#pomodoroTimer').on('click', app.pomodoroTimer);
-			$('#shortBreak').on('click', app.shortBreak);
-			$('#longBreak').on('click', app.longBreak);
-			$('#startButton').on('click', app.start);
-			$('#stopButton').on('click', app.stop);
-			$('#resetButton').on('click', app.reset);
-		},
-		pomodoroTimer : function(){
-			app.defautlTime = parseInt($('.timer').val(),10);
-			app.timer = defautlTime;
-			app.intervalID = setInterval(app.decrement, 1000);
-		},
-		shortBreak : function(){
 
-		},
-		longBreak : function(){
 
-		},
-		start : function(){
-
-		},
-		stop : function(){
-
-		},
-		reset : function(){
-
-		},
-		updateView : function(){
-
+function pomodoro(){
+	clearInterval(Interval);
+	Interval = setInterval(function(){
+		pomodoroTime--;
+		var min = parseInt(pomodoroTime/60,10);
+		var sec = pomodoroTime - min*60;
+		if(pomodoroTime === 0 && min !=0){
+			min--;
 		}
+		if(sec === 0 && min === 0){
+			clearInterval(Interval);
+		}
+		$("#minutes").text(min);
+		$('#secondes').text(sec);
+	},1000);
+	
+};
 
+
+function shortBreak(){
+	clearInterval(Interval);
+	Interval = setInterval(function(){
+		shortBreakTime--;
+		var min = parseInt(shortBreakTime/60,10);
+		var sec = shortBreakTime - min*60;
+		if (shortBreakTime === 0 && min !=0){
+			min--;
+		}
+		if(sec === 0 && min === 0){
+			clearInterval(Interval);
+		}
+		$('#minutes').text(min);
+		$('#secondes').text(sec);
+	},1000);
+};
+
+
+function longBreak(){
+	clearInterval(Interval);
+	Interval = setInterval(function(){
+		longBreakTime--;
+		var min = parseInt(longBreakTime/60, 10);
+		var sec = longBreakTime - min*60;
+		if (longBreakTime === 0 && min !=0){
+			min--;
+		}
+		if(sec === 0 && min ===0){
+			clearInterval(Interval);
+		}
+		$('#minutes').text(min);
+		$('#secondes').text(sec);
+	},1000);
+};
+
+function stop(){
+	if (!running){
+		clearInterval(Interval);
 	}
-			
 
+	running = !running;
 
+};
 
 
 
 
 
 
+$('#pomodoroTimer').on('click', function(){
+	pomodoro();
+});
 
+$('#shortBreak').on('click', function(){
+	shortBreak();
+});
 
+$('#longBreak').on('click', function(){
+	longBreak();
+});
 
+$('#stopButton').on('click', function(){
+	stop();
+});
 
 
+$('#startButton').on('click', function(){
+	if(running){
+		Interval = setInterval(1000);
+	}
+	running = !running;
+});
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	app.init();
-})();
