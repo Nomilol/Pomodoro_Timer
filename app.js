@@ -7,6 +7,7 @@
 		longBreakTime : 600,
 		running : false,
 
+
 		init : function(){
 			app.listeners();
 		},
@@ -65,20 +66,27 @@
 
 		},
 		start : function(){
-			clearInterval(app.Interval);
-			app.Interval = setInterval(function(){
-				min = parseInt(app.longBreakTime/60, 10);
-				sec = app.longBreakTime - min*60;
-			},1000);
+			if(app.pomodoro === true){
+				app.pomodoro
+			}else if(app.shortBreak === true){
+				app.shortBreak();
+			}else{
+				app.longBreak();
+			}
 		},
 		stop : function(){
 
 			if (!app.running){
 				clearInterval(app.Interval);
-					
+
 			}
 		},
 		reset : function(){
+			app.shortBreakTime = 300;
+			app.longBreakTime = 600;
+			app.pomodoroTime = 1500;
+
+
 		},
 		print : function(){
 			$('#minutes').text(min);
